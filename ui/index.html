@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>plantance</title>
+    <style>
+      :root { color-scheme: light dark; }
+      * { box-sizing: border-box; }
+      body {
+        font: 16px/1.5 -apple-system, system-ui, sans-serif;
+        margin: 0; padding: 24px; max-width: 760px; margin-inline: auto;
+      }
+      h1 { font-size: 22px; margin: 0 0 4px; }
+      .sub { opacity: .7; margin: 0 0 24px; }
+      .card { border: 1px solid #8883; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+      label { display: block; font-weight: 600; margin-bottom: 6px; }
+      input, textarea {
+        width: 100%; padding: 10px 12px; border: 1px solid #8886; border-radius: 8px;
+        font: inherit; background: transparent; color: inherit;
+      }
+      textarea { min-height: 90px; resize: vertical; }
+      button {
+        font: inherit; font-weight: 600; padding: 10px 18px; border: 0; border-radius: 8px;
+        background: #2f6fed; color: #fff; cursor: pointer; margin-top: 12px;
+      }
+      button:disabled { opacity: .5; cursor: default; }
+      .ghost { background: #8883; color: inherit; }
+      .hidden { display: none; }
+      .ok { color: #1a8a3b; } .bad { color: #c62828; }
+      #log { font: 13px/1.5 ui-monospace, monospace; margin-top: 12px; }
+      .line { padding: 3px 0; }
+      .line.step::before { content: "▸ "; }
+      .line.success { color: #1a8a3b; font-weight: 600; }
+      .line.error { color: #c62828; }
+      .line.info { opacity: .8; }
+      #result a { font-size: 18px; font-weight: 700; }
+      .pill { display:inline-block; font-size:12px; padding:2px 8px; border-radius:999px; background:#8883; margin-left:8px; }
+    </style>
+  </head>
+  <body>
+    <h1>plantance</h1>
+    <p class="sub">Describe an app. Get a live one you own.</p>
+
+    <!-- Setup -->
+    <section id="setup" class="card hidden">
+      <h2 style="margin-top:0">First, a one-time setup</h2>
+      <div style="margin-bottom:16px">
+        <label for="key">Your Anthropic API key</label>
+        <input id="key" type="password" placeholder="sk-ant-..." />
+        <button id="saveKey">Save key</button>
+        <span id="keyState" class="pill">not set</span>
+      </div>
+      <div>
+        <label>Connect your Cloudflare account</label>
+        <p class="sub" style="margin:4px 0 0">Your app will go live in your own free account.</p>
+        <button id="connectCf" class="ghost">Connect Cloudflare</button>
+        <span id="cfState" class="pill">not connected</span>
+      </div>
+    </section>
+
+    <!-- Prompt -->
+    <section id="prompt" class="card hidden">
+      <label for="thing">What do you want to build?</label>
+      <textarea id="thing" placeholder="a simple book tracker"></textarea>
+      <button id="build">Build it</button>
+    </section>
+
+    <!-- Run -->
+    <section id="run" class="card hidden">
+      <div id="log"></div>
+      <div id="result" class="hidden"></div>
+      <button id="again" class="ghost hidden">Try again</button>
+    </section>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const show = (id, on) => $(id).classList.toggle("hidden", !on);
+
+      async function refreshStatus() {
+        const s = await (await fetch("/status")).json();
+        $("keyState").textContent = s.hasKey ? "✓ set" : "not set";
+        $("keyState").className = "pill " + (s.hasKey ? "ok" : "");
+        $("cfState").textContent = s.cloudflareConnected ? "✓ connected" : "not connected";
+        $("cfState").className = "pill " + (s.cloudflareConnected ? "ok" : "");
+        const ready = s.hasKey; // Cloudflare can be connected mid-run
+        show("setup", !ready || !s.cloudflareConnected);
+        show("prompt", ready);
+        return s;
+      }
+
+      $("saveKey").onclick = async () => {
+        const apiKey = $("key").value;
+        const r = await (await fetch("/key", {
+          method: "POST", headers: { "content-type": "application/json" },
+          body: JSON.stringify({ apiKey }),
+        })).json();
+        if (!r.ok) alert(r.reason || "Could not save key.");
+        $("key").value = "";
+        refreshStatus();
+      };
+
+      $("connectCf").onclick = async () => {
+        $("connectCf").disabled = true;
+        $("connectCf").textContent = "Check your browser…";
+        await fetch("/connect-cloudflare", { method: "POST" });
+        $("connectCf").disabled = false;
+        $("connectCf").textContent = "Connect Cloudflare";
+        refreshStatus();
+      };
+
+      function addLine(l) {
+        const div = document.createElement("div");
+        div.className = "line " + l.kind;
+        div.textContent = l.text;
+        $("log").appendChild(div);
+        $("log").scrollTop = $("log").scrollHeight;
+      }
+
+      function streamRun() {
+        const es = new EventSource("/events");
+        es.addEventListener("log", (e) => addLine(JSON.parse(e.data)));
+        es.addEventListener("result", (e) => {
+          const r = JSON.parse(e.data);
+          const box = $("result");
+          if (r.url) {
+            box.innerHTML =
+              `<p class="ok">It's live!</p><a href="${r.url}" target="_blank">${r.url}</a>` +
+              `<p class="sub">This is yours — it lives in your own Cloudflare account.</p>`;
+          } else if (r.message) {
+            box.innerHTML = `<p class="bad">${r.message}</p>`;
+          }
+          show("result", true);
+          show("again", true);
+          es.close();
+        });
+      }
+
+      $("build").onclick = async () => {
+        const r = await (await fetch("/run", { method: "POST" })).json();
+        if (!r.ok) { alert(r.reason); return; }
+        $("log").innerHTML = "";
+        show("prompt", false);
+        show("run", true);
+        show("result", false);
+        show("again", false);
+        streamRun();
+      };
+
+      $("again").onclick = () => { show("run", false); refreshStatus(); };
+
+      refreshStatus();
+    </script>
+  </body>
+</html>

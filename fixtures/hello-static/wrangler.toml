@@ -1,0 +1,10 @@
+name = "plantance-demo"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "dist"
+
+# D1 binding. The host (CloudflareDeployer) patches database_id after
+# `wrangler d1 create`. The binding name MUST stay `DB` — the Functions use env.DB.
+[[d1_databases]]
+binding = "DB"
+database_name = "plantance-demo"
+database_id = "PLACEHOLDER_PATCHED_BY_HOST"
