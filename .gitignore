@@ -6,3 +6,4 @@ vendor/
 fixtures/*/node_modules/
 fixtures/*/dist/
 fixtures/*/.wrangler/
+MVP-BUILD-PLAN.md
