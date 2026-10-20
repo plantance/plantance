@@ -3,8 +3,7 @@
 Describe an app in plain English → get a **live app you own** on your own
 Cloudflare account. plantance is the *outer loop* around a coding agent: verify
 the build, provision the database, deploy into the user's own account, verify it
-went live, and recover gracefully when it doesn't. See `MVP-BUILD-PLAN.md` for
-the full product spec.
+went live, and recover gracefully when it doesn't.
 
 **Status: M0 + M1.** Skeleton + the deploy pipeline (no agent yet). The agent
 engine (Goose), the golden pack, and the full one-sentence→URL flow are M2–M4.
