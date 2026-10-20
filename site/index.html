@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>plantance — Describe an app. Own it.</title>
+  <meta name="description" content="plantance turns a plain-English description into a live web app that runs in your own Cloudflare account. Your key, your hosting, your data.">
+  <meta name="theme-color" content="#f7f4ec">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap bar">
+    <a class="mark" href="#top">plantance</a>
+    <nav aria-label="Sections">
+      <a href="#problem">The gap</a>
+      <a href="#how">How it works</a>
+      <a href="#principles">Principles</a>
+      <a href="#status">Status</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero wrap">
+    <p class="eyebrow">Plain English in. A live app you own out.</p>
+    <h1>Describe an app.<br>Own the result.</h1>
+    <p class="lede">
+      plantance takes one sentence from someone who has never opened a terminal
+      and delivers a working web application, running in that person's own hosting
+      account, using their own AI key. No credits. No lock-in. No stack trace.
+    </p>
+    <p class="note">Early development &middot; not yet available for download</p>
+  </section>
+
+  <section id="problem" class="wrap">
+    <h2>The gap</h2>
+    <div class="cols">
+      <p>
+        Coding agents can already write software. What they do not do is carry
+        the work across the last stretch: build verified, database provisioned,
+        application deployed, address confirmed live. That stretch is where
+        non-technical people stop.
+      </p>
+      <p>
+        Hosted app builders cross it for you, but the product stays on their
+        servers, behind their meter. plantance crosses it on your behalf and then
+        steps aside. What is built is yours.
+      </p>
+    </div>
+  </section>
+
+  <section id="how" class="wrap">
+    <h2>How it works</h2>
+    <p class="sub">An open-source coding agent does the writing. plantance does everything around it.</p>
+    <ol class="steps">
+      <li><span class="n">I</span><div><h3>Describe</h3><p>State what you want to track, in a sentence. A book list. A client directory. Bookings.</p></div></li>
+      <li><span class="n">II</span><div><h3>Build</h3><p>The agent writes the application inside a sealed project folder, under a fixed, known-good stack.</p></div></li>
+      <li><span class="n">III</span><div><h3>Verify</h3><p>The build is installed, compiled and smoke-tested locally. Failures are fed back to the agent, within strict limits.</p></div></li>
+      <li><span class="n">IV</span><div><h3>Provision &amp; deploy</h3><p>A database is created and the app is published, both in your own Cloudflare account.</p></div></li>
+      <li><span class="n">V</span><div><h3>Confirm</h3><p>The live address is fetched and checked. Only a page that truly renders counts as done.</p></div></li>
+    </ol>
+    <p class="aside">
+      When something breaks, plantance retries, or explains in plain language
+      what it tried. Technical detail is logged, never thrown at the user.
+    </p>
+  </section>
+
+  <section id="principles" class="wrap">
+    <h2>Principles</h2>
+    <dl class="principles">
+      <div><dt>You own it</dt><dd>The app, its database and its URL live in your account. Leave at any time and keep everything.</dd></div>
+      <div><dt>Your key, your cost</dt><dd>You bring your own model key. It stays on your machine and is never proxied through us.</dd></div>
+      <div><dt>Nothing on our servers</dt><dd>The orchestrator, the agent and the build all run locally. We hold no credentials and no data.</dd></div>
+      <div><dt>Bounded by design</dt><dd>Hard ceilings on retries, time and tokens. A runaway loop on your key is a defect, not a feature.</dd></div>
+      <div><dt>Recipes, not magic</dt><dd>Each kind of app is a small, readable pack: a prompt, a stack and a set of checks. Anyone can author one.</dd></div>
+      <div><dt>Swappable parts</dt><dd>The agent engine and deploy target sit behind interfaces. No single vendor is load-bearing.</dd></div>
+    </dl>
+  </section>
+
+  <section id="status" class="wrap">
+    <h2>Status</h2>
+    <table class="status">
+      <tbody>
+        <tr><th scope="row">Skeleton and local interface</th><td>Built</td></tr>
+        <tr><th scope="row">Deploy pipeline to Cloudflare Pages and D1</th><td>Built, awaiting live-account validation</td></tr>
+        <tr><th scope="row">Agent engine (Goose) integration</th><td>In progress</td></tr>
+        <tr><th scope="row">First app pack: simple tracker</th><td>Planned</td></tr>
+        <tr><th scope="row">Test with non-technical users</th><td>Planned</td></tr>
+      </tbody>
+    </table>
+    <p class="aside">
+      The first release is deliberately narrow: one kind of app, one hosting
+      provider, one model provider. Breadth follows reliability.
+    </p>
+    <p class="license">
+      Source-available under FSL-1.1-MIT, converting to MIT after two years.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; <span id="year">2026</span> plantance</span>
+    <span>plantance.com</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

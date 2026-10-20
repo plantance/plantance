@@ -1,0 +1,97 @@
+:root {
+  --paper: #f7f4ec;
+  --ink: #1d1b17;
+  --muted: #5f5a4f;
+  --rule: #d9d3c4;
+  --accent: #2f4a3a;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --sans: -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #16150f;
+    --ink: #ece7d8;
+    --muted: #a39d8c;
+    --rule: #34312a;
+    --accent: #9cbba8;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+a { color: inherit; }
+
+/* masthead */
+.masthead { border-bottom: 1px solid var(--rule); }
+.bar { display: flex; justify-content: space-between; align-items: baseline; padding-top: 20px; padding-bottom: 16px; gap: 16px; flex-wrap: wrap; }
+.mark { font-size: 1.25rem; letter-spacing: .04em; text-decoration: none; font-weight: 700; }
+nav { font-family: var(--sans); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+nav a { margin-left: 20px; text-decoration: none; color: var(--muted); }
+nav a:first-child { margin-left: 0; }
+nav a:hover { color: var(--ink); }
+
+/* hero */
+.hero { padding-top: 88px; padding-bottom: 72px; }
+.eyebrow { font-family: var(--sans); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 24px; }
+h1 { font-size: clamp(2.4rem, 7vw, 3.8rem); line-height: 1.1; font-weight: 400; margin: 0 0 28px; letter-spacing: -.01em; }
+.lede { font-size: 1.2rem; color: var(--ink); margin: 0 0 28px; max-width: 34em; }
+.note { font-family: var(--sans); font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0; padding-top: 16px; border-top: 1px solid var(--rule); display: inline-block; }
+
+/* sections */
+section.wrap { padding-top: 56px; padding-bottom: 56px; border-top: 1px solid var(--rule); }
+h2 { font-family: var(--sans); font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--accent); margin: 0 0 28px; }
+h3 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
+p { margin: 0 0 1em; }
+.sub { color: var(--muted); margin-bottom: 32px; }
+.cols p:last-child { margin-bottom: 0; }
+.aside { color: var(--muted); font-style: italic; margin-top: 32px; margin-bottom: 0; }
+
+/* steps */
+.steps { list-style: none; margin: 0; padding: 0; }
+.steps li { display: grid; grid-template-columns: 48px 1fr; gap: 8px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+.steps li:first-child { border-top: 1px solid var(--rule); }
+.steps p { margin: 0; color: var(--muted); }
+.n { font-variant: small-caps; color: var(--accent); font-size: 1.05rem; padding-top: 1px; }
+
+/* principles */
+.principles { margin: 0; display: grid; gap: 28px 40px; grid-template-columns: 1fr 1fr; }
+.principles dt { font-weight: 700; margin-bottom: 4px; }
+.principles dd { margin: 0; color: var(--muted); font-size: .98rem; }
+
+/* status */
+.status { width: 100%; border-collapse: collapse; font-size: .98rem; }
+.status th, .status td { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.status th { font-weight: 400; padding-right: 20px; }
+.status td { color: var(--muted); font-family: var(--sans); font-size: .85rem; white-space: nowrap; }
+.license { font-family: var(--sans); font-size: .8rem; color: var(--muted); margin: 32px 0 0; }
+
+/* footer */
+footer { border-top: 1px solid var(--rule); padding: 28px 0 40px; font-family: var(--sans); font-size: .8rem; color: var(--muted); }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+@media (max-width: 600px) {
+  body { font-size: 17px; }
+  .hero { padding-top: 56px; padding-bottom: 48px; }
+  .principles { grid-template-columns: 1fr; }
+  .status td { white-space: normal; }
+  .status tr { display: block; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .status th, .status td { display: block; border: 0; padding: 0; }
+  nav a { margin-left: 14px; }
+}
+
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
